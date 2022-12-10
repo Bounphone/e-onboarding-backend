@@ -33,7 +33,8 @@ async function register(req, res) {
             birthday,
             email: email.toLowerCase(), // sanitize: convert email to lowercase
             password: encryptedPassword,
-            dateCreated: date
+            dateCreated: date,
+            myOrg : []
         });
 
         const expire_token = process.env.EXPIRE_TOKEN
@@ -65,7 +66,7 @@ async function login(req, res) {
 
         // Validate user input
         if (!(email && password)) {
-            es.status(400).json({ message: "Please input all fields" });
+           return res.status(400).json({ message: "Please input all fields" });
         }
         // Validate if user exist in our database
         const user = await userModel.findOne({ email });
@@ -74,7 +75,7 @@ async function login(req, res) {
             const expire_token = process.env.EXPIRE_TOKEN
             // Create token
             const token = jwt.sign(
-                { user_id: user._id, email, first_name, last_name, birthday: user.birthday },
+                { user_id: user._id, email, first_name : user.first_name, last_name : user.last_name, birthday: user.birthday },
                 process.env.TOKEN_KEY,
                 {
                     expiresIn: expire_token,
@@ -85,12 +86,12 @@ async function login(req, res) {
             user.token = token;
 
             // user
-            res.status(200).json(user);
+            return  res.status(200).json({"message" : "success", accessToken : token});
         }
-        res.status(400).json({ message: "Your information is incorrect" });
+        return  res.status(400).json({ message: "Your information is incorrect" });
 
     } catch (err) {
-        res.status(500)
+        return res.status(500).send()
     }
     // Our register logic ends here
 }

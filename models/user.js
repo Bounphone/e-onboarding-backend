@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     password: { type: String },
     token: { type: String },
     dateCreated: { type: String },
-
+    myOrg: [{ type: mongoose.Schema.Types.ObjectId, ref: 'listOrgazination' }],
 });
 
 const dataModel = mongoose.model('Data', dataSchema)
