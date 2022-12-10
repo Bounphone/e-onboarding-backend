@@ -7,13 +7,13 @@ const verifyToken = (req, res, next) => {
         req.body.token || req.query.token || req.headers["api-token"];
 
     if (!token) {
-        return res.status(403).send("A token is required for authentication");
+        res.status(400).json({ message: "please provide your access token" });
     }
     try {
         const decoded = jwt.verify(token, config.TOKEN_KEY);
         req.user = decoded;
     } catch (err) {
-        return res.status(401).send("Invalid Token");
+        return  res.status(400).json({ message: "Invalid token" });
     }
     return next();
 };

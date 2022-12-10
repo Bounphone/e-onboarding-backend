@@ -17,7 +17,6 @@ async function register(req, res) {
         // Validate if user exist in our database
         const oldUser = await userModel.findOne({ email });
 
-
         if (oldUser) {
             res.status(400).json({ message: "Already user in database" });
         }
@@ -88,7 +87,7 @@ async function login(req, res) {
             // user
             res.status(200).json(user);
         }
-        es.status(400).json({ message: "Your information is incorrect" });
+        res.status(400).json({ message: "Your information is incorrect" });
 
     } catch (err) {
         res.status(500)

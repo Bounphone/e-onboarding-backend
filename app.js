@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const userRoute = require('./routes/user');
+const orgRoute = require('./routes/org');
 const app = express();
 const mongoString = process.env.DATABASE_URL;
 const port = process.env.PORT || 3001;
@@ -20,6 +21,8 @@ database.once('connected', () => {
 app.use(express.json());
 
 app.use('/api/v1/user', userRoute)
+app.use('/api/v1/organize', orgRoute)
+
 
 app.listen(port, () => {
     console.log(`Server Started at ${port}`)
